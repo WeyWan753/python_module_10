@@ -1,3 +1,6 @@
+from collections.abc import Callable
+
+
 def mage_counter() -> Callable:
     count = 0
     def counter() -> int:
@@ -24,16 +27,14 @@ def enchantment_factory(enchantment_type: str) -> Callable:
 def memory_vault() -> dict[str, Callable]:
     memory = {}
     def store(key, value) -> None:
-        nonlocal memory
+        #nonlocal memory
         memory[key] = value
 
     def recall(key):
-        nonlocal memory
-        return memory[key]
+        #nonlocal memory
+        return memory.get(key, "Memory not found")
 
-    store(1, store)
-    store(2, recall)
-    return(memory)
+    return{1: store, 2: recall}
 
 
 
@@ -54,7 +55,9 @@ if __name__ == "__main__":
     enchant_looting = enchantment_factory("looting")
     print(enchant_looting("axe"))
 
-    memory = memory_vault()
-    print(memory)
-    memory[1](3, "naa")
-    print(memory)
+    dct = memory_vault()
+    store = dct[1]
+    recall = dct[2]
+
+    store("123","hello")
+    print(recall("1233"))
