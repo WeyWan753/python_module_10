@@ -25,6 +25,10 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
     )
 
 
+def spell_sequence(spells: list[Callable]) -> Callable:
+    return lambda target, power: [spell(target, power) for spell in spells]
+
+
 if __name__ == "__main__":
     combined = spell_combiner(heal, fireball)
     print(combined("Ali", 2))
@@ -32,6 +36,10 @@ if __name__ == "__main__":
     amplified = power_amplifier(fireball, 3)
     print(amplified("Ali", 2))
 
-    condition = lambda target, power: True if target == "Ali" and power == 2 else False
+    def condition(target: str, power: int) -> bool:
+        return (True if target == "Ali" and power == 2 else False)
     conditional = conditional_caster(condition, fireball)
     print(conditional("Ali", 3))
+
+    sequence = spell_sequence([heal, fireball])
+    print(sequence("Ali", 4))
