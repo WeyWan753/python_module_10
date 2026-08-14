@@ -1,13 +1,17 @@
 import functools
 from collections.abc import Callable
+import time
 
 
 def spell_timer(func: Callable) -> Callable:
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         print(f"Casting {func.__name__}...")
+        start = time.perf_counter()
         result = func(*args, **kwargs)
-        print("Spell completed in 0.101 seconds")
+        time.sleep(1.3)
+        elapsed = time.perf_counter() - start
+        print(f"Spell completed in {elapsed:.3f} seconds")
         return result
     return wrapper
 
@@ -25,7 +29,7 @@ def power_validator(min_power: int) -> Callable:
             if power is None:
                 return "power keyword argument is not passed"
             if power < min_power:
-                return "insufficient power for this spell"
+                return "Insufficient power for this spell"
             return (func(*args, **kwargs))
         return wrapper
     return decorator
@@ -48,10 +52,13 @@ def retry_spell(max_attempts: int) -> Callable:
                     if i != max_attempts - 1:
                         print(f"Spell failed, retrying... "
                               f"(attempt {i + 1}/{max_attempts})")
+                        time.sleep(1.2)
                     else:
                         print(f"Spell casting failed "
                               f"after {max_attempts} attempts")
                         print("Waaaaaaagh spelled !")
+                        return (f"Spell casting failed "
+                                f"after {max_attempts} attempts")
         return wrapper
     return decorator
 
@@ -77,8 +84,8 @@ def main() -> None:
     print()
 
     print("Testing power validator...")
-    print(f"power: 30 < 35: {heal("Ali", power=30)}")
-    print(f"power: 80 >= 35: {heal("Ali", power=80)}")
+    print(f"power: 30 < 35: {heal('Ali', power=30)}")
+    print(f"power: 80 >= 35: {heal('Ali', power=80)}")
     print()
 
     print("Testing retrying spell...")

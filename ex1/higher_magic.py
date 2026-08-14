@@ -15,7 +15,7 @@ def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
 
 def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
     return (
-        lambda target, power: f"orignal: {power}, amplified: " +
+        lambda target, power: f"original: {power}, amplified: " +
         base_spell(target, power * multiplier)
     )
 
