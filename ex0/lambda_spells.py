@@ -40,24 +40,33 @@ if __name__ == "__main__":
     ]
     spells = ['freeze', 'shield', 'tsunami', 'flash']
 
+    print("-----data-----")
+    print()
     print(f"artifacts: {artifacts}")
     print()
     print(f"mages: {mages}")
     print()
     print(f"spells: {spells}")
     print()
+    print("-----data-----")
+    print()
 
     print("Testing artifact sorter...")
-    print(artifact_sorter(artifacts))
+    print(" comes before ".join(
+        [f"{artifact['name']} ({artifact['power']} power)"
+         for artifact in artifact_sorter(artifacts)]
+    ))
     print()
 
     print("Testing power filter...")
-    print(power_filter(mages, 88))
+    print(" ".join([f"{mage['name']} ({mage['power']} power >= 88)"
+          for mage in power_filter(mages, 88)]))
     print()
 
     print("Testing spell transformer...")
-    print(spell_transformer(spells))
+    print(" ".join(spell_transformer(spells)))
     print()
 
     print("Testing mage stats...")
-    print(mage_stats(mages))
+    print("\n".join([f"{key}: {value}"
+          for key, value in mage_stats(mages).items()]))
