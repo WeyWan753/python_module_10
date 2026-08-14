@@ -46,12 +46,13 @@ if __name__ == "__main__":
     print(amplified("Ali", 2))
     print()
 
-    def condition(target: str, power: int) -> bool:
-        return (True if target == "Ali" and power == 2 else False)
-
     print("Testing conditional caster...")
-    conditional = conditional_caster(condition, fireball)
-    print(conditional("Ali", 4))
+    conditional_t = conditional_caster(lambda target, power: True, fireball)
+    conditional_f = conditional_caster(lambda target, power: False, fireball)
+    print("Condition: True")
+    print(conditional_t("Ali", 4))
+    print("condition: False")
+    print(conditional_f("Ali", 4))
     print()
 
     print("Testing spell sequence...")
