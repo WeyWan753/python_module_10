@@ -31,8 +31,7 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
 def spell_sequence(spells: list[Callable]) -> Callable:
     return (
         lambda target, power:
-        ", ".join([f"{i + 1}) {spells[i](target, power)}"
-                  for i in range(len(spells))])
+        [spell(target, power) for spell in spells]
     )
 
 
@@ -57,4 +56,5 @@ if __name__ == "__main__":
 
     print("Testing spell sequence...")
     sequence = spell_sequence([heal, fireball])
-    print(sequence("Ali", 4))
+    result = sequence("Ali", 4)
+    print(", ".join([f"{i + 1}) {result[i]}" for i in range(len(result))]))
