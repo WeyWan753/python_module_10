@@ -1,11 +1,12 @@
 import functools
 from collections.abc import Callable
 import time
+from typing import Any
 
 
 def spell_timer(func: Callable) -> Callable:
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         print(f"Casting {func.__name__}...")
         start = time.perf_counter()
         result = func(*args, **kwargs)
@@ -22,9 +23,9 @@ def fireball(target: str, power: int) -> str:
 
 
 def power_validator(min_power: int) -> Callable:
-    def decorator(func):
+    def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             power = kwargs.get('power')
             if power is None:
                 return "power keyword argument is not passed"
@@ -41,9 +42,9 @@ def heal(target: str, power: int) -> str:
 
 
 def retry_spell(max_attempts: int) -> Callable:
-    def decorator(func):
+    def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             for i in range(max_attempts):
                 try:
                     x = func(*args, **kwargs)
@@ -94,7 +95,7 @@ def main() -> None:
     x = 0
 
     @retry_spell(3)
-    def test_retry_1():
+    def test_retry_1() -> str:
         nonlocal x
         x += 1
         if x < 4:
@@ -107,7 +108,7 @@ def main() -> None:
     x = 0
 
     @retry_spell(8)
-    def test_retry_2():
+    def test_retry_2() -> str:
         nonlocal x
         x += 1
         if x < 5:
