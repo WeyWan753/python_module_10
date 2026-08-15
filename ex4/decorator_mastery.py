@@ -42,6 +42,7 @@ def heal(target: str, power: int) -> str:
 
 def retry_spell(max_attempts: int) -> Callable:
     def decorator(func):
+        @functools.wraps(func)
         def wrapper(*args, **kwargs):
             for i in range(max_attempts):
                 try:
