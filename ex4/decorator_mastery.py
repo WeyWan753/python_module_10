@@ -28,7 +28,12 @@ def power_validator(min_power: int) -> Callable:
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             power = kwargs.get('power')
             if power is None:
-                return "power keyword argument is not passed"
+                if isinstance(args[0], int):
+                    power = args[0]
+                elif isinstance(args[1], int):
+                    power = args[1]
+                else:
+                    power = args[2]
             if power < min_power:
                 return "Insufficient power for this spell"
             return (func(*args, **kwargs))
@@ -86,8 +91,8 @@ def main() -> None:
     print()
 
     print("Testing power validator...")
-    print(f"power: 30 < 35: {heal('Ali', power=30)}")
-    print(f"power: 80 >= 35: {heal('Ali', power=80)}")
+    print(f"power: 30 < 35: {heal('Ali', 30)}")
+    print(f"power: 80 >= 35: {heal('Ali', 80)}")
     print()
 
     print("Testing retrying spell...")
@@ -122,8 +127,8 @@ def main() -> None:
     mg = MageGuild()
     print(mg.validate_mage_name("ab c"))
     print(mg.validate_mage_name("b    c"))
-    print(mg.cast_spell("fireball", power=15))
-    print(mg.cast_spell("fireball", power=5))
+    print(mg.cast_spell("fireball", 15))
+    print(mg.cast_spell("fireball", 5))
 
 
 if __name__ == "__main__":
