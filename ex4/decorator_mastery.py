@@ -28,12 +28,10 @@ def power_validator(min_power: int) -> Callable:
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             power = kwargs.get('power')
             if power is None:
-                if isinstance(args[0], int):
-                    power = args[0]
-                elif isinstance(args[1], int):
-                    power = args[1]
-                else:
-                    power = args[2]
+                if isinstance(args[-1], int):
+                    power = args[-1]
+            if not isinstance(power, int):
+                return "No power inputted"
             if power < min_power:
                 return "Insufficient power for this spell"
             return (func(*args, **kwargs))
